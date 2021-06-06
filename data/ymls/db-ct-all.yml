@@ -54,4 +54,15 @@ fdefs:
     file: '{root}/data/defs/preds/pna/infer.py'
     name: predict
   return:
-    pna: pna-256
+    pna: pna-crp
+- kwargs:
+    lng: lng-crp
+    pna: pna-crp
+  lambda: null
+  python:
+    file: '{root}/data/defs/stats/analyze.py'
+    name: calculate_ratio 
+  return:
+    vol-lng: vol-lng
+    vol-pna: vol-pna
+    ratio: ratio

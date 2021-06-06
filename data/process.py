@@ -8,10 +8,14 @@ def create_all(yml='./ymls/db-ct-all.yml'):
 
     # --- Manual (serial)
     db.refresh(cols='dat-raw', flush=True)
+
     db.refresh(cols='dat-256', flush=True)
     db.refresh(cols='lng-256', flush=True)
+
     db.refresh(cols='dat-crp', flush=True)
     db.refresh(cols='pna-crp', flush=True)
+
+    db.refresh(cols='ratio', flush=True)
 
 # ===============================================================================
 # create_all()
