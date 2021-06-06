@@ -1,0 +1,13 @@
+__pycache__
+*.swp
+*.pyc
+*.pkl
+*.hdf5
+*.zip
+*.csv
+outs/
+csvs/
+*.nfs*
+legacy/
+.ipynb_checkpoints/
+scripts/

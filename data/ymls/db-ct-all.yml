@@ -1,0 +1,57 @@
+_id:
+  project: covid_biomarker
+  version: null
+files:
+  csv: /data/csvs/db-ct-all.csv.gz
+  yml: /data/ymls/db-ct-all.yml
+query: {}
+sform:
+  dat-dcm: '{root}/proc/dcm/{sid}/'
+  dat-raw: '{root}/proc/raw/{sid}/dat.hdf5'
+  dat-256: '{root}/proc/256/{sid}/dat.hdf5'
+  lng-256: '{root}/proc/256/{sid}/lng.hdf5'
+  dat-crp: '{root}/proc/crp/{sid}/dat.hdf5'
+  lng-crp: '{root}/proc/crp/{sid}/lng.hdf5'
+  pna-crp: '{root}/proc/crp/{sid}/pna.hdf5'
+fdefs:
+- kwargs:
+    dat: dat-dcm
+  lambda: null
+  python: null
+  return:
+    dat: dat-raw
+- kwargs:
+    arr: dat-raw
+  lambda: null
+  python:
+    file: '{root}/data/defs/xform/data.py'
+    name: create_256
+  return:
+    arr: dat-256
+- kwargs:
+    arr: dat-256
+  lambda: null
+  python:
+    file: '{root}/data/defs/preds/lung/infer.py'
+    name: predict
+  return:
+    lng: lng-256
+- kwargs:
+    dat: dat-raw
+    lng: lng-256
+  lambda: null
+  python:
+    file: '{root}/data/defs/xform/data.py'
+    name: create_crp
+  return:
+    dat: dat-crp
+    lng: lng-crp
+- kwargs:
+    arr: dat-crp
+    lng: lng-crp
+  lambda: null
+  python:
+    file: '{root}/data/defs/preds/pna/infer.py'
+    name: predict
+  return:
+    pna: pna-256
