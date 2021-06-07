@@ -9,6 +9,10 @@ trained = Trained(path='{}/data/defs/preds/lung/model.hdf5'.format(CODE))
     
 def preprocess(dat):
 
+    # --- Pad
+    pw = ((1, 1), (0, 0), (0, 0), (0, 0))
+    dat = np.pad(dat, pad_width=pw, mode='constant', constant_values=-1024)
+
     # --- Normalize
     dat = dat.clip(min=-1024, max=256) / 128 
 
@@ -22,6 +26,9 @@ def postprocess(logits):
     return msk 
 
 def predict(arr):
+
+    if arr.data.shape[0] < 3:
+        return {}
 
     # --- Preprocess
     dat = preprocess(arr.data)

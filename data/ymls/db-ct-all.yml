@@ -61,7 +61,7 @@ fdefs:
   lambda: null
   python:
     file: '{root}/data/defs/stats/analyze.py'
-    name: calculate_ratio 
+    name: calculate_ratio
   return:
     vol-lng: vol-lng
     vol-pna: vol-pna

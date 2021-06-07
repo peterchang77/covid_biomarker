@@ -1,6 +1,7 @@
 import numpy as np
 from jarvis.train.models import Trained
 from jarvis.utils.arrays import blobs
+from jarvis.utils.general import tools as jtools
 
 # --- Load model
 CODE = jtools.get_paths('covid_biomarker')['code']
@@ -22,6 +23,12 @@ def postprocess(logits, lng):
     return pna 
 
 def predict(arr, lng):
+
+    if type(lng) is str:
+        return {} 
+
+    if arr.data.shape[0] < 3:
+        return {}
 
     # --- Preprocess
     dat = preprocess(arr.data)

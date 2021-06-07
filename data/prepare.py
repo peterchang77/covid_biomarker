@@ -47,9 +47,9 @@ def create_db(name='ct'):
     # --- Initialize header 
     header = pd.DataFrame(index=sids)
     header['severity'] = [sevs[s] for s in sids]
-    header['vol-lng'] = 0
-    header['vol-pna'] = 0
-    header['ratio'] = 0
+    header['vol-lng'] = ''
+    header['vol-pna'] = ''
+    header['ratio'] = ''
 
     # --- Create DB
     db = DB(

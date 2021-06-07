@@ -4,7 +4,7 @@ def create_256(arr):
 
     """
     # --- Create box
-    box = arr.new_box(0, 0, 0, 1, 1, 1)
+    box = arr.new_box((0, 0, 0, 1, 1, 1))
     box.balance_aspect_ratio([None, 1, 1])
     
     # --- Create crop
@@ -22,6 +22,15 @@ def create_crp(dat, lng):
     """
     crps = {}
 
+    if type(lng) is str:
+        return crps
+
+    if lng.data.size == 1:
+        return crps
+
+    if lng.data.sum() < 10:
+        return crps
+    
     # --- Create box
     box = lng.find_bounds(padding=(0.05, 0.05, 0.05), acceleration=2)
     box.balance_aspect_ratio([None, 1, 1])
