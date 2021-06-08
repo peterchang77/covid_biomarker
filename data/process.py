@@ -2,7 +2,14 @@ import numpy as np
 from jarvis.utils.db import DB
 from jarvis.utils import arrays as jars
 
-def create_all(yml='./ymls/db-ct-all.yml'):
+def create_all_generic(yml='./ymls/db-generic-all.yml'):
+
+    db = DB(yml, load=jars.create)
+
+    # --- Manual (serial)
+    db.refresh(cols='dat-512-xr', flush=True)
+
+def create_all_covid(yml='./ymls/db-ct-all.yml'):
 
     db = DB(yml, load=jars.create)
 
@@ -18,5 +25,6 @@ def create_all(yml='./ymls/db-ct-all.yml'):
     # db.to_csv()
 
 # ===============================================================================
-# create_all()
+# create_all_generic()
+# create_all_covid()
 # ===============================================================================

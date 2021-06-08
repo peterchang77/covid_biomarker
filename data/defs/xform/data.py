@@ -1,3 +1,22 @@
+def create_subsampled_xr(arr, shapes=(512, 256), **kwargs):
+    """
+    Method to subsample radiographs
+
+    """
+    subs = {}
+
+    if type(arr) is str:
+        return subs 
+
+    # --- Create box
+    box = arr.new_box((0, 0, 0, 1, 1, 1))
+    box.balance_aspect_ratio([None, 1, 1])
+
+    for s in shapes:
+        subs['arr-{}'.format(s)] = arr.crop_and_resample(shape=(arr.data.shape[0], s, s), box=box)
+
+    return subs
+
 def create_256(arr):
     """
     Method to create 3mm @ 256 x 256 slices
