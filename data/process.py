@@ -7,7 +7,8 @@ def create_all_generic(yml='./ymls/db-generic-all.yml'):
     db = DB(yml, load=jars.create)
 
     # --- Manual (serial)
-    db.refresh(cols='dat-512-xr', flush=True)
+    # db.refresh(cols='dat-raw-xr', flush=True)
+    # db.refresh(cols='dat-512-xr', flush=True)
 
 def create_all_covid(yml='./ymls/db-ct-all.yml'):
 

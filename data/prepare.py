@@ -17,52 +17,6 @@ def create_symlinks(SRC, subdir='dcm'):
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             os.symlink(src=src, dst=dst)
 
-def create_db(name='ct'):
-
-    # --- Initialize sids
-    df = pd.read_csv('./csvs/raw_covid_xr_ct.csv')
-    accs = set(df['{}_accession'.format(name)])
-    sevs = {row['{}_accession'.format(name)]: row['severity'] for n, row in df.iterrows()}
-
-    # --- Find all sids matching current CSV file column
-    sids = glob.glob('{}/proc/dcm/*/'.format(DATA))
-    sids = sorted([os.path.basename(s[:-1]) for s in sids])
-    sids = [s for s in sids if s in accs]
-
-    # --- Initialize fnames
-    fnames = pd.DataFrame(index=sids)
-
-    # --- Original 
-    fnames['dat-dcm'] = ''
-    fnames['dat-raw'] = ''
-
-    # --- @ 256
-    fnames['dat-256'] = ''
-    fnames['lng-256'] = ''
-
-    # --- @ crp
-    fnames['dat-crp'] = ''
-    fnames['lng-crp'] = ''
-    fnames['pna-crp'] = ''
-
-    # --- Initialize header 
-    header = pd.DataFrame(index=sids)
-    header['severity'] = [sevs[s] for s in sids]
-    header['vol-lng'] = ''
-    header['vol-pna'] = ''
-    header['ratio'] = ''
-
-    # --- Create DB
-    db = DB(
-        project_id='covid_biomarker',
-        prefix='db-{}-all'.format(name),
-        fnames=fnames,
-        header=header)
-
-    db.init_sform()
-
-    db.to_yml()
-
 def create_db_combined():
 
     # --- Initialize sids
@@ -119,15 +73,62 @@ def create_db_combined():
 
     db.to_yml()
 
+def create_db(name='ct'):
+
+    # --- Initialize sids
+    df = pd.read_csv('./csvs/raw_covid_xr_ct.csv')
+    accs = set(df['{}_accession'.format(name)])
+    sevs = {row['{}_accession'.format(name)]: row['severity'] for n, row in df.iterrows()}
+
+    # --- Find all sids matching current CSV file column
+    sids = glob.glob('{}/proc/dcm/*/'.format(DATA))
+    sids = sorted([os.path.basename(s[:-1]) for s in sids])
+    sids = [s for s in sids if s in accs]
+
+    # --- Initialize fnames
+    fnames = pd.DataFrame(index=sids)
+
+    # --- Original 
+    fnames['dat-dcm'] = ''
+    fnames['dat-raw'] = ''
+
+    # --- @ 256
+    fnames['dat-256'] = ''
+    fnames['lng-256'] = ''
+
+    # --- @ crp
+    fnames['dat-crp'] = ''
+    fnames['lng-crp'] = ''
+    fnames['pna-crp'] = ''
+
+    # --- Initialize header 
+    header = pd.DataFrame(index=sids)
+    header['severity'] = [sevs[s] for s in sids]
+    header['vol-lng'] = ''
+    header['vol-pna'] = ''
+    header['ratio'] = ''
+
+    # --- Create DB
+    db = DB(
+        project_id='covid_biomarker',
+        prefix='db-{}-all'.format(name),
+        fnames=fnames,
+        header=header)
+
+    db.sform = {}
+    db.init_sform()
+
+    db.to_yml()
+
 # =============================================================================
 # COMBINED: XR + CT (March 2020-21) 
 # =============================================================================
 
-# --- Create links for XR (dcm + raw)
+# # --- Create links for XR (dcm + raw)
 # create_symlinks('/home/chanon/caidm_DATA_prep/pna/xr_dcm', subdir='dcm')
 # create_symlinks('/home/chanon/caidm_DATA_prep/pna/xr_raw', subdir='raw')
-
-# --- Create links for CT (dcm + raw + 256 + crp)
+#
+# # --- Create links for CT (dcm + raw + 256 + crp)
 # create_symlinks('/home/chanon/caidm_DATA_prep/pna/proc/dcm', subdir='dcm')
 # create_symlinks('/home/chanon/caidm_DATA_prep/pna/proc/raw', subdir='raw')
 # create_symlinks('/home/chanon/caidm_DATA_prep/pna/proc/256', subdir='256')
