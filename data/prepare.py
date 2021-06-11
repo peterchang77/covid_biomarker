@@ -76,6 +76,7 @@ def create_db_combined():
 
     db.sform = {}
     db.update_sform('{root}{curr}')
+    db.create_valid_column()
 
     db.to_yml()
 

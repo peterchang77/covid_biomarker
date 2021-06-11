@@ -1,4 +1,4 @@
-def create_subsampled_xr(arr, shapes=(512, 256), **kwargs):
+def create_subsampled_xr(arr, shapes=(512, 256), xr_inverted=False, **kwargs):
     """
     Method to subsample radiographs
 
@@ -7,6 +7,10 @@ def create_subsampled_xr(arr, shapes=(512, 256), **kwargs):
 
     if type(arr) is str:
         return subs 
+
+    # --- Invert
+    if xr_inverted:
+        arr.data = arr.data.max() - arr.data
 
     # --- Create box
     box = arr.new_box((0, 0, 0, 1, 1, 1))

@@ -1,0 +1,39 @@
+_id:
+  project: covid_biomarker
+  version: null
+files:
+  csv: /data/csvs/db-generic-all.csv.gz
+  yml: /data/ymls/db-generic-all.yml
+query: {}
+sform:
+  dat-dcm-xr: '{root}{curr}'
+  dat-dcm-ct: '{root}{curr}'
+  dat-raw-xr: '{root}{curr}'
+  dat-raw-ct: '{root}{curr}'
+  dat-256-ct: '{root}{curr}'
+  lng-256-ct: '{root}{curr}'
+  dat-crp-ct: '{root}{curr}'
+  lng-crp-ct: '{root}{curr}'
+  pna-crp-ct: '{root}{curr}'
+  dat-512-xr: '{root}{curr}'
+  dat-256-xr: '{root}{curr}'
+fdefs:
+- kwargs:
+    dat: dat-dcm-xr
+  lambda: null
+  python: null
+  return:
+    dat: dat-raw-xr
+- kwargs:
+    arr: dat-raw-xr
+    shapes:
+    - 512
+    - 256
+    xr_inverted: xr-inverted
+  lambda: null
+  python:
+    file: '{root}/data/defs/xform/data.py'
+    name: create_subsampled_xr
+  return:
+    arr-512: dat-512-xr
+    arr-256: dat-256-xr
