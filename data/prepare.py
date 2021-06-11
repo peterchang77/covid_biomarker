@@ -57,10 +57,15 @@ def create_db_combined():
     fnames['dat-256-xr'] = ['{}/proc/256-256/{}/dat.hdf5'.format(DATA, sid) for sid in sids_xr]
 
     # --- Initialize header 
+    df = pd.read_csv('/home/chanon/caidm_DATA_prep/pna/chestct_pna_volumes.csv', index_col='accession')
+
     header = pd.DataFrame(index=sids_xr)
-    header['vol-lng'] = ''
-    header['vol-pna'] = ''
-    header['ratio'] = ''
+    header['vol-lng'] = [df.at[int(s), 'lung_vol'] for s in sids_ct] 
+    header['vol-pna'] = [df.at[int(s), 'pna_vol'] for s in sids_ct]
+    header['ratio'] = [df.at[int(s), 'ratio_pna/lng'] for s in sids_ct]
+
+    df = pd.read_csv('./csvs/raw_generic_xr_inverted.csv', index_col='accession')
+    header['xr-inverted'] = [df.at[int(s), 'prediction'] for s in sids_xr]
 
     # --- Create DB
     db = DB(
@@ -69,6 +74,7 @@ def create_db_combined():
         fnames=fnames,
         header=header)
 
+    db.sform = {}
     db.update_sform('{root}{curr}')
 
     db.to_yml()
@@ -115,7 +121,6 @@ def create_db(name='ct'):
         fnames=fnames,
         header=header)
 
-    db.sform = {}
     db.init_sform()
 
     db.to_yml()
@@ -135,7 +140,7 @@ def create_db(name='ct'):
 # create_symlinks('/home/chanon/caidm_DATA_prep/pna/proc/crp', subdir='crp')
 
 # --- Create DB
-# create_db_combined()
+create_db_combined()
 
 # =============================================================================
 # COVID: CT
